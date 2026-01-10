@@ -3,21 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css" />
     <title>Quiz Game</title>
   </head>
-  <body>
+  <body
+    class="min-h-screen flex justify-center items-center bg-[#f7f1e7] font-sans"
+  >
     <!-- Start screen -->
-    <section id="start-screen" class="screen">
-      <h1>Quiz Time!</h1>
-      <p>Test your knowledge with these fun questions</p>
-      <button id="start-btn">Start Quiz</button>
+    <section
+      id="start-screen"
+      class="screen bg-white p-8 w-[90%] max-w-md rounded-xl shadow-lg text-center"
+    >
+      <h1 class="text-3xl font-bold text-[#ff6b35] mb-3">Quiz Time!</h1>
+      <p class="text-lg text-[#666] mb-6">
+        Test your knowledge with these fun questions
+      </p>
+      <button
+        id="start-btn"
+        class="bg-[#ff6b35] text-white text-lg px-6 py-3 rounded-lg font-medium transition-transform duration-150 ease-out hover:translate-y-0.5 active:scale-95"
+      >
+        Start Quiz
+      </button>
     </section>
 
     <!-- Quiz screen -->
-    <section id="quiz-screen" class="screen">
-      <h2 id="question-text">What is the capital of France?</h2>
-      <div class="quiz-info">
+    <section
+      id="quiz-screen"
+      class="screen bg-white w-[90%] max-w-md rounded-xl shadow-lg p-8"
+    >
+      <h2
+        id="question-text"
+        class="text-2xl font-bold text-[#333] text-center mb-4"
+      >
+        What is the capital of France?
+      </h2>
+      <div
+        class="quiz-info flex justify-between items-center text-sm text-[#666] mb-8"
+      >
         <p>
           Question <span id="current-question">1</span> of
           <span id="total-questions">5</span>
@@ -25,34 +48,76 @@
         <p>Score: <span id="current-score">0</span></p>
       </div>
 
-      <div class="options">
-        <button class="option" data-index="0">London</button>
-        <button class="option" data-index="1">Berlin</button>
-        <button class="option" data-index="2">Paris</button>
-        <button class="option" data-index="3">Madrid</button>
+      <div class="options flex flex-col gap-3">
+        <button
+          class="option text-sm text-left px-4 py-3 rounded-xl bg-[#f3ede4] text-[#333] transition-all duration-200 hover:bg-[#e6dfd5] hover:translate-y-[1px] active:bg-[#dbd3c8] active:scale-[98%]"
+          data-index="0"
+        >
+          London
+        </button>
+        <button
+          class="option text-sm text-left px-4 py-3 rounded-xl bg-[#f3ede4] text-[#333] transition-all duration-200 hover:bg-[#e6dfd5] hover:translate-y-[1px] active:bg-[#dbd3c8] active:scale-[98%]"
+          data-index="1"
+        >
+          Berlin
+        </button>
+        <button
+          class="option text-sm text-left px-4 py-3 rounded-xl bg-[#f3ede4] text-[#333] transition-all duration-200 hover:bg-[#e6dfd5] hover:translate-y-[1px] active:bg-[#dbd3c8] active:scale-[98%]"
+          data-index="2"
+        >
+          Paris
+        </button>
+        <button
+          class="option text-sm text-left px-4 py-3 rounded-xl bg-[#f3ede4] text-[#333] transition-all duration-200 hover:bg-[#e6dfd5] hover:translate-y-[1px] active:bg-[#dbd3c8] active:scale-[98%]"
+          data-index="3"
+        >
+          Madrid
+        </button>
       </div>
 
-      <div class="progress-bar">
-        <div id="progress" class="progress"></div>
+      <div
+        class="progress-bar mt-6 h-2 w-full rounded-lg mt-3 bg-[#eee] overflow-hidden"
+      >
+        <div
+          id="progress"
+          class="progress h-full bg-[#ff6b35] rounded-lg transition-all duration-300"
+        ></div>
       </div>
     </section>
 
     <!-- Result screen -->
-    <section id="result-screen" class="screen">
-      <h2>Quiz Results</h2>
+    <section
+      id="result-screen"
+      class="screen bg-white w-[90%] max-w-md rounded-xl shadow-lg p-8 text-center"
+    >
+      <h2 class="text-center text-2xl font-bold mb-5 text-orange-500">
+        Quiz Results
+      </h2>
 
-      <div class="result-box">
-        <p>
-          You scored <strong id="final-score">3</strong> out of
-          <strong id="questions-count">5</strong>
+      <div class="result-box bg-[#f3ede4] p-5 rounded-xl text-center mb-6">
+        <p class="text-sm">
+          You scored
+          <strong id="final-score" class="text-lg text-orange-500">3</strong>
+          out of
+          <strong id="questions-count" class="text-lg text-orange-500"
+            >5</strong
+          >
         </p>
 
-        <p id="result-message" class="result-message">
+        <p
+          id="result-message"
+          class="result-message mt-4 text-2xl font-semibold"
+        >
           Good effort! Keep learning!
         </p>
       </div>
 
-      <button id="restart-btn">Restart Quiz</button>
+      <button
+        id="restart-btn"
+        class="bg-orange-500 text-white text-lg px-6 py-3 rounded-lg font-medium transition-transform duration-150 ease-out hover:translate-y-0.5 active:scale-95"
+      >
+        Restart Quiz
+      </button>
     </section>
     <script src="js/script.js"></script>
   </body>
