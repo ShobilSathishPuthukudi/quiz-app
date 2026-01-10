@@ -25,14 +25,14 @@ const resultMessage = document.getElementById("result-message");
 
 const questions = [
   {
-    question: "What is the capital of France",
-    options: ["London", "Berlin", "paris", "Madrid"],
-    correctIndex: 2,
+    question: "Which HTML tag is used for creating a hyperlink?",
+    options: ["<link>", "<a>", "<href>", "<url>"],
+    correctIndex: 1, // <a>
   },
   {
     question: "Which language runs in the browser?",
     options: ["Java", "C", "Python", "JavaScript"],
-    correctIndex: 3,
+    correctIndex: 3, // JavaScript
   },
   {
     question: "HTML stands for?",
@@ -42,7 +42,17 @@ const questions = [
       "Hyper Text Marketing Language",
       "Hyper Tool Multi Language",
     ],
-    correctIndex: 1,
+    correctIndex: 1, // Hyper Text Markup Language
+  },
+  {
+    question: "Which CSS property is used to change text color?",
+    options: ["text-color", "font-color", "color", "text-style"],
+    correctIndex: 2, // color
+  },
+  {
+    question: "Which symbol is used for single-line comments in JavaScript?",
+    options: ["//", "/*", "#", "--"],
+    correctIndex: 0, // //
   },
 ];
 
@@ -62,10 +72,10 @@ function loadQuestion() {
 
   questionText.textContent = currentQuestion.question;
 
-  optionButtons.forEach((button, index) => {
-    button.textContent = currentQuestion.options[index];
-    button.classList.remove("correct", "wrong");
-    button.disabled = false;
+  optionButtons.forEach((btn, index) => {
+    btn.textContent = currentQuestion.options[index];
+    btn.classList.remove("correct", "wrong");
+    btn.disabled = false;
   });
 
   currentQuestionDisplay.textContent = currentQuestionIndex + 1;
@@ -76,26 +86,26 @@ function loadQuestion() {
   progressBar.style.width = `${progressPercent}%`;
 }
 
-optionButtons.forEach((button) => {
-  button.addEventListener("click", handleAnswerClick);
+optionButtons.forEach((btn) => {
+  btn.addEventListener("click", handleAnswerClick);
 });
 
 function handleAnswerClick(e) {
-  const selectedButton = e.target;
-  const selectedIndex = Number(selectedButton.dataset.index);
+  const selectedBtn = e.target;
+  const selectedIndex = Number(selectedBtn.dataset.index);
   const correctIndex = questions[currentQuestionIndex].correctIndex;
 
   optionButtons.forEach((btn) => (btn.disabled = true));
 
   if (selectedIndex === correctIndex) {
-    selectedButton.classList.add("correct");
+    selectedBtn.classList.add("correct");
     score++;
   } else {
-    selectedButton.classList.add("wrong");
+    selectedBtn.classList.add("wrong");
     optionButtons[correctIndex].classList.add("correct");
   }
 
-  currentStextContent = score;
+  currentScoreDisplay.textContent = score;
 
   setTimeout(nextQuestion, 1000);
 }
