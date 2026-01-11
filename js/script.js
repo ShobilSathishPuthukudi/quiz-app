@@ -155,6 +155,14 @@ const questions = [
   },
 ];
 
+const QUESTIONS_PER_QUIZ = 5;
+const TIME_LIMIT_PER_QUESTION = 20;
+let shuffledQuestions = [];
+let currentQuestionIndex = 0;
+let score = 0;
+let timeLeft;
+let timerInterval = null;
+
 function shuffleArray(array) {
   const shuffled = [...array];
 
@@ -165,19 +173,11 @@ function shuffleArray(array) {
   return shuffled;
 }
 
-const QUESTIONS_PER_QUIZ = 5;
-let TIME_LIMIT_PER_QUESTION = 20;
-let shuffledQuestions = [];
-let currentQuestionIndex = 0;
-let score = 0;
-let timeLeft;
-let timerInterval;
-
 function startTimer() {
   timeLeft = TIME_LIMIT_PER_QUESTION;
   updateTimerDisplay();
 
-  clearInterval(timerInterval);
+  clearTimer();
 
   timerInterval = setInterval(() => {
     timeLeft--;
@@ -187,6 +187,13 @@ function startTimer() {
       handleTimeout();
     }
   }, 1000);
+}
+
+function clearTimer() {
+  if (timerInterval != null) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
 }
 
 function handleTimeout() {
@@ -200,6 +207,8 @@ function updateTimerDisplay() {
   timerCountDisplay.textContent = timeLeft;
   const timerPercent = (timeLeft / TIME_LIMIT_PER_QUESTION) * 100;
   timerProgress.style.width = `${timerPercent}%`;
+
+  timerCountDisplay.setAttribute("aria-label", `${timeLeft} seconds remaining`);
 
   timerProgress.classList.remove(
     "bg-green-500",
@@ -237,12 +246,27 @@ function showScreen(screen) {
 }
 
 function startQuiz() {
-  shuffledQuestions = shuffleArray(questions).slice(0, QUESTIONS_PER_QUIZ);
+  clearTimer();
 
-  if (shuffledQuestions.length < QUESTIONS_PER_QUIZ) {
-    alert(`Error: Need at least &{QUESTIONS_PER_QUIZ} questions in the pool`);
+  if (!questions || questions.length === 0) {
+    alert("No questions available!");
+    showScreen(startScreen);
     return;
   }
+
+  if (questions.length < QUESTIONS_PER_QUIZ) {
+    alert(`Error: Need at least ${QUESTIONS_PER_QUIZ} questions in the pool`);
+    return;
+  }
+
+  shuffledQuestions = shuffleArray(questions).slice(0, QUESTIONS_PER_QUIZ);
+
+  if (!shuffledQuestions || shuffledQuestions.length === 0) {
+    alert("Failed to load questions. please try again.");
+    showScreen(startScreen);
+    return;
+  }
+
   loadQuestion();
   startTimer();
 }
@@ -265,6 +289,16 @@ function loadQuestion() {
   const progressPercent =
     ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
   progressBar.style.width = `${progressPercent}%`;
+
+  timerProgress.classList.remove(
+    "bg-red-500",
+    "bg-orange-500",
+    "bg-green-500",
+    "shadow-[0_0_10px_rgba(239,68,68,0.5)]",
+    "shadow-[0_0_10px_rgba(249,115,22,0.5)]",
+    "shadow-[0_0_10px_rgba(34,197,94,0.5)]"
+  );
+  timerProgress.classList.add("bg-green-500");
 }
 
 optionButtons.forEach((btn) => {
@@ -278,7 +312,7 @@ optionButtons.forEach((btn) => {
 });
 
 function handleAnswerClick(e) {
-  clearInterval(timerInterval);
+  clearTimer();
 
   const selectedBtn = e.target;
   const selectedIndex = Number(selectedBtn.dataset.index);
@@ -311,6 +345,8 @@ function nextQuestion() {
 }
 
 function showResult() {
+  clearTimer();
+
   showScreen(resultScreen);
 
   finalScoreDisplay.textContent = score;
@@ -333,16 +369,35 @@ function showResult() {
   resultMessage.textContent = message;
 }
 
-startBtn.addEventListener("click", () => {
+function resetQuiz() {
   currentQuestionIndex = 0;
   score = 0;
+  shuffledQuestions = [];
+  clearTimer();
+
+  timerProgress.style.width = "100%";
+  timerCountDisplay.textContent = TIME_LIMIT_PER_QUESTION;
+  timerProgress.classList.remove(
+    "bg-red-500",
+    "bg-orange-500",
+    "bg-green-500",
+    "shadow-[0_0_10px_rgba(239,68,68,0.5)]",
+    "shadow-[0_0_10px_rgba(249,115,22,0.5)]",
+    "shadow-[0_0_10px_rgba(34,197,94,0.5)]"
+  );
+
+  timerProgress.classList.add("bg-green-500");
+  resultMessage.classList.remove("good", "bad", "average");
+}
+
+startBtn.addEventListener("click", () => {
+  resetQuiz();
   showScreen(quizScreen);
   startQuiz();
 });
 
 restartBtn.addEventListener("click", () => {
-  currentQuestionIndex = 0;
-  score = 0;
+  resetQuiz();
   showScreen(startScreen);
 });
 
