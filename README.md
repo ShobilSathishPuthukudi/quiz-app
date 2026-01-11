@@ -9,7 +9,7 @@ This project was built as part of my journey transitioning into the IT industry,
 
 ## 🚀 Live Demo
 
-<!-- Add link after deployment -->
+**Play the quiz:** [https://shobilsathishputhukudi.github.io/quiz-app/]
 
 ---
 
